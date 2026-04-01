@@ -1,0 +1,41 @@
+.bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 24px rgba(16,28,44,0.14);
+}
+.message {
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(12px, 1.4vw, 26px);
+  color: #102134;
+}
+.stats { display:flex; align-items:center; gap: 10px; }
+.stat {
+  display:flex; align-items:center; gap:6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+}
+.icon { width: clamp(20px, 3vw, 40px); height: clamp(20px,3vw,40px); object-fit:contain; }
+.value { font-family:"Tomorrow",sans-serif; font-weight:800; font-size:clamp(14px,1.5vw,30px); color:#102134; }
+.pulse .icon { animation: pulse .42s ease; }
+@keyframes pulse { 50% { transform: scale(1.18); } }
+@media (min-width: 1024px) {
+  .bar { min-height: 84px; padding: 14px 34px; }
+  .stats { gap: 18px; }
+  .stat { padding: 8px 14px; }
+}

@@ -1,0 +1,90 @@
+.pageBody {
+  min-height: calc(100dvh - 80px);
+
+  /* bilo je 108px → previše */
+  padding-top: 84px;
+  padding-bottom: 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+
+  /* 🔥 KLJUČNO – ovo diže sadržaj gore */
+  align-items: flex-start;
+}
+
+.stage {
+  width: min(1160px, calc(100vw - 56px));
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  align-content: start;
+  box-sizing: border-box;
+}
+
+.stage > * {
+  width: 100%;
+}
+
+.dualQuizWrap {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  justify-items: stretch;
+  box-sizing: border-box;
+}
+
+.quizColumn {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.quizColumn > * {
+  width: 100%;
+}
+
+@media (max-width: 1280px) {
+  .stage {
+    width: min(1080px, calc(100vw - 44px));
+  }
+
+  .dualQuizWrap {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .pageBody {
+    padding-top: 96px;
+  }
+
+  .stage {
+    width: min(940px, calc(100vw - 32px));
+    gap: 14px;
+  }
+
+  .dualQuizWrap {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 820px) {
+  .pageBody {
+    padding-top: 84px;
+    padding-bottom: 18px;
+  }
+
+  .stage {
+    width: min(680px, calc(100vw - 22px));
+    gap: 12px;
+  }
+
+  .dualQuizWrap {
+    grid-template-columns: 1fr;
+  }
+}

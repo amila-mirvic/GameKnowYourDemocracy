@@ -1,0 +1,35 @@
+.panel {
+  position: absolute;
+  top: 72px;
+  right: 18px;
+  z-index: 20;
+  width: min(360px, calc(100vw - 36px));
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 18px 44px rgba(0,0,0,.22);
+}
+.row {
+  display:flex;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.label,.value,.subTitle,.empty {
+  font-family:"Tomorrow",sans-serif;
+  font-weight:800;
+  text-transform:uppercase;
+}
+.label,.subTitle { color:#ca5840; font-size: 13px; }
+.value,.empty { color:#102134; font-size:13px; }
+.badges {
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.badge {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}

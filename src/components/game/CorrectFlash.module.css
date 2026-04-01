@@ -1,0 +1,25 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 26;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.box {
+  padding: 18px 28px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.96);
+  color: #ca5840;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(18px, 2vw, 28px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.22);
+  animation: pop .52s ease;
+}
+@keyframes pop {
+  0% { transform: scale(.8); opacity: 0; }
+  30% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}

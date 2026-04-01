@@ -1,0 +1,183 @@
+.screen {
+  min-height: 100dvh;
+  width: 100%;
+  position: relative;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.overlay {
+  min-height: 100dvh;
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 18px 18px 24px;
+  box-sizing: border-box;
+}
+.introLayer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 18, 30, 0.58);
+  z-index: 4;
+}
+.introFadeOut {
+  animation: fadeOut 650ms ease forwards;
+}
+@keyframes fadeOut { to { opacity: 0; } }
+.introText {
+  max-width: min(980px, 92vw);
+  text-align: center;
+  color: #fff;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(18px, 2vw, 34px);
+  line-height: 1.42;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+  white-space: pre-line;
+}
+.introCaret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  margin-left: 8px;
+  vertical-align: text-bottom;
+  background: rgba(255, 255, 255, 0.82);
+  animation: blink 800ms steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.uiWrap {
+  width: min(1160px, 100%);
+  display: grid;
+  gap: 18px;
+  align-items: center;
+}
+.infoCard {
+  width: min(760px, 100%);
+  justify-self: center;
+  align-self: center;
+  position: relative;
+  padding: clamp(18px, 2vw, 28px);
+  padding-bottom: clamp(54px, 6vw, 72px);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.20);
+  color: #ca5840;
+}
+.cardTitle {
+  margin-bottom: 14px;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: clamp(15px, 1.5vw, 22px);
+  text-transform: uppercase;
+}
+.rows {
+  display: grid;
+  gap: 12px;
+}
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.icon {
+  width: clamp(34px, 4vw, 54px);
+  height: clamp(34px, 4vw, 54px);
+  object-fit: contain;
+}
+.pillIcon {
+  min-width: 68px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #ca5840;
+  color: #fff;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  text-align: center;
+}
+.rowText {
+  white-space: pre-line;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 700;
+  font-size: clamp(13px, 1.2vw, 18px);
+  line-height: 1.35;
+}
+.actions {
+  position: absolute;
+  right: 22px;
+  bottom: -18px;
+  display: flex;
+  gap: 12px;
+}
+.actionBtn {
+  min-width: 138px;
+  height: 46px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+  color: #ca5840;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  cursor: pointer;
+}
+.characterWrap {
+  display: none;
+}
+.uiReveal {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(8px);
+  animation: reveal .55s ease forwards;
+}
+.uiTextIn * {
+  opacity: 1;
+  transform: none;
+}
+@keyframes reveal {
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@media (min-width: 1024px) {
+  .overlay {
+    padding: 0 34px 20px;
+  }
+  .uiWrap {
+    grid-template-columns: minmax(210px, 320px) minmax(500px, 760px);
+    gap: 24px;
+    min-height: 100dvh;
+  }
+  .infoCard {
+    justify-self: stretch;
+    align-self: center;
+    transform: translateY(12px);
+  }
+  .characterWrap {
+    display: block;
+    align-self: end;
+    justify-self: start;
+    width: min(24vw, 320px);
+    transform: translateY(18px);
+    pointer-events: none;
+  }
+  .characterImg {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+}
+@media (max-height: 820px) and (min-width: 1024px) {
+  .uiWrap {
+    grid-template-columns: minmax(190px, 280px) minmax(480px, 740px);
+  }
+  .characterWrap { width: min(20vw, 260px); }
+  .infoCard { padding-bottom: 64px; }
+}

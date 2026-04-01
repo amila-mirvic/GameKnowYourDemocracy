@@ -1,0 +1,27 @@
+.item { display:grid; gap: 10px; justify-items:center; }
+.iconWrap {
+  border:0; background:transparent; padding:0; cursor:pointer;
+}
+.icon {
+  width: clamp(130px, 22vw, 260px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 24px rgba(0,0,0,.2));
+}
+.button {
+  min-width: clamp(150px, 22vw, 260px);
+  min-height: 48px;
+  padding: 10px 18px;
+  border:0;
+  border-radius: 14px;
+  background: rgba(255,255,255,.96);
+  color: #ca5840;
+  font-family: "Tomorrow", sans-serif;
+  font-weight:800;
+  text-transform:uppercase;
+  font-size: clamp(12px, 1.2vw, 16px);
+  cursor:pointer;
+  box-shadow: 0 12px 28px rgba(0,0,0,.18);
+}
+.pulse { animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.03); } }

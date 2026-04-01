@@ -1,0 +1,28 @@
+.wrap {
+  position: fixed;
+  z-index: 24;
+  pointer-events: none;
+  animation: travel .82s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translate(-50%, -50%);
+}
+.icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+.delta {
+  color: #fff;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  text-shadow: 0 4px 12px rgba(0,0,0,.4);
+}
+@keyframes travel {
+  from { transform: translate3d(0, 0, 0); opacity: 1; }
+  to { transform: translate3d(calc(var(--toX) - var(--fromX)), calc(var(--toY) - var(--fromY)), 0); opacity: 0; }
+}

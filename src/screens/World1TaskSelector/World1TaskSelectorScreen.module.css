@@ -1,0 +1,394 @@
+.screen {
+  width: 100%;
+  height: 100%;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+/* ================= MOBILE FIRST ================= */
+
+.bubble {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.bubbleText {
+  font-family: "Tomorrow", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: #ca5840;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ✅ Narrower mobile layout */
+.taskRail {
+  width: 90%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 10;
+  margin-top: -30px;
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+}
+
+/* ✅ Bigger icons + thinner buttons */
+.taskItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 5px 6px;
+}
+
+.taskIconWrap {
+  width: 78px;
+  height: 78px;
+  flex: 0 0 78px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.taskIcon {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.taskBtn {
+  flex: 1;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 0 10px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.taskBtnEnabled {
+  background: rgba(255, 255, 255, 0.95);
+  color: #ca5840;
+  cursor: pointer;
+}
+
+.taskBtnDisabled {
+  background: rgba(255, 255, 255, 0.5);
+  color: rgba(202, 88, 64, 0.4);
+}
+
+/* ================= BADGE BUTTON ================= */
+
+.achBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 2000; /* always above */
+  border: none;
+  cursor: pointer;
+}
+
+.achIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.achPanel {
+  position: fixed;
+  top: 65px;
+  right: 12px;
+  width: calc(100% - 24px);
+  max-width: 360px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+  z-index: 1999;
+}
+
+.characterWrap {
+  display: none;
+}
+
+/* ================= TABLET ================= */
+
+@media (min-width: 768px) {
+  .taskIconWrap {
+    width: 90px;
+    height: 90px;
+    flex: 0 0 90px;
+  }
+
+  .taskBtn {
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .bubbleText {
+    font-size: 15px;
+  }
+}
+
+/* ================= DESKTOP ================= */
+
+@media (min-width: 1025px) {
+  .overlay {
+    display: block;
+    padding: 0;
+  }
+
+  /* ✅ TWO COLUMNS + MOVED DOWN */
+  .taskRail {
+    position: absolute;
+    left: 55px;
+    top: 130px; /* ⬇ moved down */
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 100px;
+    row-gap: 70px;
+
+    width: 1100px;
+    margin-top: 0;
+    z-index: 10;
+    max-width: none;
+  }
+
+  .taskItem {
+    background: transparent;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 45px;
+    align-items: center;
+  }
+
+  .taskIconWrap {
+    width: 200px;
+    height: 200px;
+    background: transparent;
+  }
+
+  .taskIconWrap:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.03);
+  }
+
+  .taskIcon {
+    width: 210px;
+    height: 210px;
+  }
+
+  .taskBtn {
+    height: 90px;
+    font-size: 18px;
+    border-radius: 16px;
+    padding: 0 32px;
+  }
+
+  .bubble {
+    position: absolute;
+    right: 70px;
+    top: 60px;
+    width: 760px;
+    height: 130px;
+    padding: 0 26px;
+    display: flex;
+    align-items: center;
+    max-width: none;
+  }
+
+  .bubbleText {
+    font-size: 22px;
+    text-align: left;
+  }
+
+  .characterWrap {
+    display: block;
+    position: absolute;
+    left: 780px;
+    top: -40px;
+    width: 650px;
+    height: 1000px;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .characterImg {
+    height: 1000px;
+  }
+
+  .achBtn {
+    position: absolute;
+    top: 34px;
+    right: 42px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .achPanel {
+    position: absolute;
+    top: 110px;
+    right: 42px;
+    width: 560px;
+  }
+}
+
+/* ================= ANIMATIONS ================= */
+
+
+@keyframes achIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.achRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.achLabel {
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1d1d1d;
+}
+
+.achValue {
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: #1d1d1d;
+}
+
+.achSubTitle {
+  margin-top: 12px;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1d1d1d;
+}
+
+.badgeRow {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.badgeImg {
+  width: 74px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.badgeEmpty {
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1d1d1d;
+}
+
+/* === DESKTOP FLUID FIX === */
+@media (min-width:1024px){
+
+:root{
+  --task-max-width: min(900px, 90vw);
+}
+
+.character img,
+.characterImage{
+  max-height:60vh;
+  width:auto;
+  object-fit:contain;
+}
+
+.instructionsCharacter img{
+  max-height:55vh;
+}
+
+.card,
+.statementCard,
+.taskCard{
+  max-width:var(--task-max-width);
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.options,
+.answers,
+.answerOptions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:clamp(10px,2vw,22px);
+}
+
+.options img,
+.answers img,
+.answerOptions img{
+  width:clamp(48px,5vw,90px);
+  height:auto;
+}
+
+button,
+.optionButton{
+  font-size:clamp(14px,1.2vw,18px);
+}
+
+h1,h2{
+  font-size:clamp(24px,3vw,40px);
+}
+
+p{
+  font-size:clamp(14px,1.2vw,18px);
+}
+
+}

@@ -1,0 +1,121 @@
+.grid {
+  width: 100%;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 5px solid #f0b23b;
+  border-radius: 26px;
+  background: rgba(202, 88, 64, 0.95);
+  box-shadow: 0 18px 40px rgba(16, 28, 44, 0.22);
+  box-sizing: border-box;
+}
+
+.equalRows {
+  grid-template-rows: repeat(4, 88px);
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+  min-height: 88px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.98);
+  color: #ca5840;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  box-sizing: border-box;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.key {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(202, 88, 64, 0.12);
+  color: #ca5840;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-family: "Tomorrow", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 15px;
+  line-height: 1.05;
+}
+
+.singleColumn {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 1400px) {
+  .equalRows {
+    grid-template-rows: repeat(4, 82px);
+  }
+
+  .button {
+    min-height: 82px;
+    grid-template-columns: 46px 1fr;
+    padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .key {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .equalRows {
+    grid-template-rows: repeat(4, 76px);
+  }
+
+  .button {
+    min-height: 76px;
+    grid-template-columns: 42px 1fr;
+    padding: 9px 12px;
+    gap: 10px;
+  }
+
+  .key {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .label {
+    font-size: 13px;
+  }
+}

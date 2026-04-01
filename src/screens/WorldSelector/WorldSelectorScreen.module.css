@@ -1,0 +1,566 @@
+.screen {
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay {
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  position: absolute;
+  top: 52px;
+  left: 52px;
+  right: 52px;
+  margin: 0;
+  color: #ffffff;
+  font-family: "Tomorrow", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+  z-index: 3;
+}
+
+.worldCard {
+  position: absolute;
+  top: 132px;
+  left: 52px;
+  width: calc(100vw - 104px);
+  max-width: 1650px;
+  height: 470px;
+  padding: 24px 28px 24px;
+  border-radius: 28px;
+  display: grid;
+  grid-template-columns: minmax(300px, 560px) minmax(320px, 1fr);
+  gap: 28px;
+  z-index: 2;
+}
+
+.worldCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  background: rgba(202, 88, 64, 0.82);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+  z-index: 0;
+}
+
+.worldCard > * {
+  position: relative;
+  z-index: 1;
+}
+
+.worldLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.worldImageWrap {
+  position: relative;
+  width: 100%;
+  height: 245px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.worldImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.disabledBadge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Tomorrow", sans-serif;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.worldLabel {
+  color: #ffffff;
+  font-family: "Tomorrow", sans-serif;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.worldRight {
+  position: relative;
+  min-width: 0;
+  padding-top: 2px;
+  padding-bottom: 185px;
+}
+
+.worldDesc {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Tomorrow", sans-serif;
+  font-size: 16px;
+  line-height: 1.48;
+  font-weight: 500;
+  max-width: 100%;
+}
+
+.playBtn {
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  width: min(100%, 520px);
+  min-height: 92px;
+  border: none;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #ca684e;
+  font-family: "Tomorrow", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.playBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.3);
+}
+
+.playBtnDisabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.bottomArea {
+  position: absolute;
+  left: 52px;
+  right: 52px;
+  top: 565px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 3;
+}
+
+.worldThumbs {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  min-width: 0;
+  flex-wrap: nowrap;
+  margin-top: -18px;
+}
+
+.thumbCard {
+  width: 205px;
+  border: none;
+  border-radius: 12px;
+  padding: 8px;
+  background: rgba(202, 88, 64, 0.9);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.thumbCard:hover {
+  transform: translateY(-2px);
+}
+
+.thumbCardActive {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55), 0 12px 26px rgba(0, 0, 0, 0.18);
+}
+
+.thumbCardDisabled {
+  opacity: 0.92;
+}
+
+.thumbImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.75 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbLock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbLockIcon {
+  width: 12px;
+  height: 12px;
+  filter: brightness(0) invert(1);
+}
+
+.thumbLabel {
+  display: block;
+  color: #ffffff;
+  font-family: "Tomorrow", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.arrowControls {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: 34px;
+}
+
+.arrowBtn {
+  width: 118px;
+  height: 72px;
+  border: none;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.arrowBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.22);
+}
+
+.arrowSvg {
+  width: 32px;
+  height: 32px;
+  fill: #ca684e;
+}
+
+.caret {
+  display: inline-block;
+  width: 10px;
+  height: 18px;
+  margin-left: 6px;
+  vertical-align: -2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.72);
+  animation: caretBlink 700ms steps(1) infinite;
+}
+
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1500px) {
+  .title {
+    font-size: 30px;
+  }
+
+  .worldCard {
+    height: 445px;
+    grid-template-columns: minmax(280px, 470px) minmax(280px, 1fr);
+    gap: 24px;
+  }
+
+  .worldImageWrap {
+    height: 225px;
+  }
+
+  .worldRight {
+    padding-bottom: 170px;
+  }
+
+  .worldDesc {
+    font-size: 15px;
+    line-height: 1.42;
+  }
+
+  .playBtn {
+    top: 300px;
+    width: min(100%, 440px);
+    min-height: 82px;
+    font-size: 30px;
+  }
+
+  .bottomArea {
+    top: 535px;
+  }
+
+  .worldThumbs {
+    margin-top: -14px;
+  }
+
+  .thumbCard {
+    width: 180px;
+  }
+
+  .arrowControls {
+    margin-top: 28px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .title {
+    top: 38px;
+    left: 28px;
+    right: 28px;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .worldCard {
+    top: 110px;
+    left: 28px;
+    width: calc(100vw - 56px);
+    height: 405px;
+    padding: 20px;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .worldImageWrap {
+    height: 205px;
+  }
+
+  .worldLabel {
+    font-size: 22px;
+  }
+
+  .worldRight {
+    padding-bottom: 150px;
+  }
+
+  .worldDesc {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .playBtn {
+    top: 275px;
+    width: min(100%, 300px);
+    min-height: 64px;
+    font-size: 24px;
+  }
+
+  .bottomArea {
+    left: 28px;
+    right: 28px;
+    top: 490px;
+    gap: 10px;
+  }
+
+  .worldThumbs {
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-top: -12px;
+  }
+
+  .worldThumbs::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .thumbCard {
+    width: 138px;
+    flex: 0 0 auto;
+  }
+
+  .arrowControls {
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .arrowBtn {
+    width: 82px;
+    height: 62px;
+  }
+}
+
+@media (max-width: 767px) {
+  .screen,
+  .overlay {
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .title {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    padding: 28px 18px 0;
+    font-size: 18px;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .worldCard {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(100% - 28px);
+    height: auto;
+    margin: 12px auto 0;
+    padding: 14px 14px 18px;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    border-radius: 22px;
+  }
+
+  .worldLeft {
+    gap: 10px;
+  }
+
+  .worldImageWrap {
+    height: auto;
+    aspect-ratio: 1.45 / 1;
+    border-radius: 10px;
+  }
+
+  .worldLabel {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .worldRight {
+    position: static;
+    padding-bottom: 0;
+  }
+
+  .worldDesc {
+    padding: 0 4px;
+    font-size: 11px;
+    line-height: 1.35;
+    text-align: center;
+    max-width: none;
+  }
+
+  .playBtn {
+    position: static;
+    margin-top: 0;
+    align-self: center;
+    width: calc(100% - 40px);
+    min-height: 56px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .bottomArea {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    width: calc(100% - 28px);
+    margin: -4px auto 24px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .worldThumbs {
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    margin-top: 0;
+  }
+
+  .thumbCard {
+    width: 86px;
+    padding: 5px;
+    border-radius: 8px;
+  }
+
+  .thumbImageWrap {
+    margin-bottom: 5px;
+    border-radius: 6px;
+  }
+
+  .thumbLabel {
+    font-size: 9px;
+  }
+
+  .thumbLock {
+    width: 18px;
+    height: 18px;
+    top: 5px;
+    right: 5px;
+  }
+
+  .thumbLockIcon {
+    width: 9px;
+    height: 9px;
+  }
+
+  .arrowControls {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .arrowBtn {
+    width: 92px;
+    height: 54px;
+    border-radius: 12px;
+  }
+
+  .arrowSvg {
+    width: 26px;
+    height: 26px;
+  }
+}
