@@ -17,13 +17,13 @@ const WORLDS = [
   {
     id: 2,
     route: "/world-2",
-    title: "WORLD 2 - NAME",
+    title: "WORLD 2 - MEDIA LITERACY",
     thumbTitle: "WORLD 2",
     image: `${process.env.PUBLIC_URL}/worlds/world2.png`,
-    playable: false,
-    disabled: true,
+    playable: true,
+    disabled: false,
     description:
-      "World 2 is already visible in the selector and prepared as the next chapter of the experience. For now, this world stays locked until its tasks and route are fully connected.",
+      "In this world, you will explore how information is created, shared, distorted, and believed. You will learn to recognize manipulation, misinformation, emotional framing, and the difference between credible reporting and misleading content. Through practical situations and decision-making, you will strengthen your media literacy skills and learn how to respond critically in a fast-moving information environment.",
   },
   {
     id: 3,

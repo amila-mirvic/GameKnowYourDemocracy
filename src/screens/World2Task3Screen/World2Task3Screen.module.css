@@ -1,0 +1,29 @@
+.layout {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  align-content: center;
+  min-height: calc(100dvh - 140px);
+  padding: 0 18px;
+}
+
+.layout > * {
+  width: 100%;
+  max-width: 1120px;
+}
+
+.tightGrid {
+  max-width: 1120px;
+}
+
+@media (max-width: 767px) {
+  .layout {
+    gap: 12px;
+    min-height: calc(100dvh - 120px);
+    padding: 0 10px;
+  }
+
+  .layout > * {
+    max-width: 100%;
+  }
+}
