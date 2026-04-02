@@ -220,10 +220,12 @@ export default function World1Task4Screen() {
 
       <div className={styles.pageBody}>
         <div className={styles.stage}>
-          <QuestionCard
-            title={scene?.title}
-            text={scene?.statement || ''}
-          />
+          <div className={styles.questionTight}>
+            <QuestionCard
+              title={scene?.title}
+              text={scene?.statement || ''}
+            />
+          </div>
 
           {stageStep === 'action' ? (
             <QuizAnswerGrid
