@@ -36,16 +36,23 @@ export default function World2Task3Screen() {
   const [topMessage, setTopMessage] = useState(`${nameUpper} KEEP GOING`);
   const [endOpen, setEndOpen] = useState(false);
 
-  useEffect(() => setTopMessage(`${nameUpper} KEEP GOING`), [nameUpper]);
+  useEffect(() => {
+    setTopMessage(`${nameUpper} KEEP GOING`);
+  }, [nameUpper]);
 
   const pickTopMessage = useCallback(() => {
     setTopMessage((prev) => {
       let next = prev;
       let guard = 0;
+
       while (next === prev && guard < 10) {
-        next = WORLD2_FEEDBACK_MESSAGES[Math.floor(Math.random() * WORLD2_FEEDBACK_MESSAGES.length)].replace('{NAME}', nameUpper);
+        next =
+          WORLD2_FEEDBACK_MESSAGES[
+            Math.floor(Math.random() * WORLD2_FEEDBACK_MESSAGES.length)
+          ].replace('{NAME}', nameUpper);
         guard += 1;
       }
+
       return next;
     });
   }, [nameUpper]);
@@ -63,13 +70,20 @@ export default function World2Task3Screen() {
       totalRounds: WORLD2_TASK3.rounds.length,
       finishedAt: Date.now(),
     });
+
     if (!safeRead('yd_world2_task3_counted')) {
-      const prev = safeRead('yd_scores', { totalPoints: 0, totalCuriosityPoints: 0, badges: [] });
+      const prev = safeRead('yd_scores', {
+        totalPoints: 0,
+        totalCuriosityPoints: 0,
+        badges: [],
+      });
+
       safeWrite('yd_scores', {
         totalPoints: (prev.totalPoints || 0) + taskPoints,
         totalCuriosityPoints: prev.totalCuriosityPoints || 0,
         badges: [...(prev.badges || []), ...badges],
       });
+
       safeWrite('yd_world2_task3_counted', true);
     }
   }, []);
@@ -83,31 +97,39 @@ export default function World2Task3Screen() {
   const nextRound = useCallback(() => {
     setRoundIndex((prev) => {
       const next = prev + 1;
+
       if (next >= WORLD2_TASK3.rounds.length) {
         window.setTimeout(() => finishTask(), 100);
         return prev;
       }
+
       return next;
     });
   }, [finishTask]);
 
-  const handleOption = useCallback((option) => {
-    if (!current || modalOpen || endOpen) return;
-    pickTopMessage();
+  const handleOption = useCallback(
+    (option) => {
+      if (!current || modalOpen || endOpen) return;
 
-    if (option.key === current.correctKey) {
-      showFlash();
-      window.setTimeout(() => setPoints((v) => v + current.points), 320);
+      pickTopMessage();
+
+      const isCorrect = option.key === current.correctKey;
+
+      // ✅ TACAN ODGOVOR = samo bodovi + dalje, bez popup-a
+      if (isCorrect) {
+        showFlash();
+        window.setTimeout(() => setPoints((v) => v + current.points), 320);
+        window.setTimeout(() => nextRound(), 680);
+        return;
+      }
+
+      // ❌ POGRESAN = popup
       setModalText(current.feedback);
       setModalOpen(true);
       window.setTimeout(() => nextRound(), 900);
-      return;
-    }
-
-    setModalText(current.feedback);
-    setModalOpen(true);
-    window.setTimeout(() => nextRound(), 900);
-  }, [current, endOpen, modalOpen, nextRound, pickTopMessage, showFlash]);
+    },
+    [current, endOpen, modalOpen, nextRound, pickTopMessage, showFlash]
+  );
 
   const earnedBadges = useMemo(() => [resolveSkillBadge(points)], [points]);
 
@@ -123,6 +145,7 @@ export default function World2Task3Screen() {
 
       <div className={styles.layout}>
         <QuestionCard title={current?.title || ''} text={current?.statement || ''} />
+
         <QuizAnswerGrid
           className={styles.tightGrid}
           answers={(current?.options || []).map((option) => ({
@@ -135,6 +158,7 @@ export default function World2Task3Screen() {
 
       <CorrectFlash open={flashOpen} label="CORRECT" />
       <InfoModal open={modalOpen} onClose={() => setModalOpen(false)} text={modalText} />
+
       <TaskCompletionModal
         open={endOpen}
         onClose={() => navigate(MAIN_MENU_ROUTE, { state: player })}
