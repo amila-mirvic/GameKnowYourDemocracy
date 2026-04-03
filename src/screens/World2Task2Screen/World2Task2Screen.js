@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CorrectFlash from '../../components/game/CorrectFlash';
+import FlyItemsLayer from '../../components/game/FlyItemsLayer';
 import GameplayShell from '../../components/game/GameplayShell';
 import InfoModal from '../../components/game/InfoModal';
 import QuestionCard from '../../components/game/QuestionCard';
@@ -36,6 +37,14 @@ export default function World2Task2Screen() {
   const [topMessage, setTopMessage] = useState(`${nameUpper} KEEP GOING`);
   const [endOpen, setEndOpen] = useState(false);
 
+  const pointsTargetRef = useRef(null);
+  const curiosityTargetRef = useRef(null);
+  const cardRef = useRef(null);
+  const [flyItems, setFlyItems] = useState([]);
+  const flyIdRef = useRef(0);
+  const [pulsePoints, setPulsePoints] = useState(false);
+  const [pulseCuriosity] = useState(false);
+
   useEffect(() => {
     setTopMessage(`${nameUpper} KEEP GOING`);
   }, [nameUpper]);
@@ -56,6 +65,40 @@ export default function World2Task2Screen() {
       return next;
     });
   }, [nameUpper]);
+
+  const makeFly = useCallback(({ type, icon, delta }) => {
+    const fromRect = cardRef.current?.getBoundingClientRect();
+    const toRect =
+      type === 'points'
+        ? pointsTargetRef.current?.getBoundingClientRect()
+        : curiosityTargetRef.current?.getBoundingClientRect();
+
+    if (!fromRect || !toRect) return;
+
+    const id = flyIdRef.current++;
+
+    setFlyItems((items) => [
+      ...items,
+      {
+        id,
+        icon,
+        delta,
+        fromX: fromRect.left + fromRect.width * 0.65,
+        fromY: fromRect.top + fromRect.height * 0.32,
+        toX: toRect.left + toRect.width * 0.5,
+        toY: toRect.top + toRect.height * 0.5,
+      },
+    ]);
+
+    window.setTimeout(() => {
+      setFlyItems((items) => items.filter((item) => item.id !== id));
+
+      if (type === 'points') {
+        setPulsePoints(true);
+        window.setTimeout(() => setPulsePoints(false), 320);
+      }
+    }, 820);
+  }, []);
 
   const showFlash = useCallback(() => {
     setFlashOpen(true);
@@ -113,16 +156,24 @@ export default function World2Task2Screen() {
 
       pickTopMessage();
 
-      // ✅ TACAN ODGOVOR = samo bodovi + dalje, bez popup-a
       if (option.correct) {
         showFlash();
+        makeFly({
+          type: 'points',
+          icon: WORLD2_TASK2.pointsIcon,
+          delta: `+${option.points || 0}`,
+        });
         window.setTimeout(() => setPoints((v) => v + (option.points || 0)), 320);
         window.setTimeout(() => nextScenario(), 680);
         return;
       }
 
-      // ❌ PARCIJALAN ili POGRESAN = popup ostaje
       if (option.points > 0) {
+        makeFly({
+          type: 'points',
+          icon: WORLD2_TASK2.pointsIcon,
+          delta: `+${option.points}`,
+        });
         window.setTimeout(() => setPoints((v) => v + option.points), 320);
         setModalText(`Reasonable, but not the strongest first step.\n\n${current.why}`);
         setModalOpen(true);
@@ -134,7 +185,7 @@ export default function World2Task2Screen() {
       setModalOpen(true);
       window.setTimeout(() => nextScenario(), 900);
     },
-    [current, endOpen, modalOpen, nextScenario, pickTopMessage, showFlash]
+    [current, endOpen, makeFly, modalOpen, nextScenario, pickTopMessage, showFlash]
   );
 
   const earnedBadges = useMemo(() => [resolveSkillBadge(points)], [points]);
@@ -147,6 +198,10 @@ export default function World2Task2Screen() {
         curiosityPoints={curiosityPoints}
         pointsIcon={WORLD2_TASK2.pointsIcon}
         curiosityIcon={WORLD2_TASK2.curiosityIcon}
+        pointsTargetRef={pointsTargetRef}
+        curiosityTargetRef={curiosityTargetRef}
+        pulsePoints={pulsePoints}
+        pulseCuriosity={pulseCuriosity}
       />
 
       <div
@@ -159,6 +214,7 @@ export default function World2Task2Screen() {
         }}
       >
         <QuestionCard
+          cardRef={cardRef}
           title={current?.title || ''}
           text={current?.statement || ''}
           whyIcon={WORLD2_TASK2.whyIcon}
@@ -178,6 +234,7 @@ export default function World2Task2Screen() {
         />
       </div>
 
+      <FlyItemsLayer items={flyItems} />
       <CorrectFlash open={flashOpen} label="CORRECT" />
       <InfoModal open={modalOpen} onClose={() => setModalOpen(false)} text={modalText} />
 
