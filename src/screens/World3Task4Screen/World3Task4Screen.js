@@ -6,13 +6,12 @@ import GameplayShell from '../../components/game/GameplayShell';
 import InfoModal from '../../components/game/InfoModal';
 import QuestionCard from '../../components/game/QuestionCard';
 import QuizAnswerGridMultiple from '../../components/game/QuizAnswerGridMultiple';
-import TaskCompletionModal from '../../components/game/TaskCompletionModal';
 import TaskTopBar from '../../components/game/TaskTopBar';
 import { WORLD3_FEEDBACK_MESSAGES, WORLD3_TASK4 } from '../../game/content/world3Tasks';
 import { getPlayerFromLocationState } from '../../game/utils/player';
 import { safeRead, safeWrite } from '../../game/utils/storage';
 
-const MAIN_MENU_ROUTE = '/world-3';
+const OUTRO_ROUTE = '/world-3/task-4-outro';
 
 const resolveSkillBadge = (points) => {
   if (points <= 8) return { id: 'beginner', src: WORLD3_TASK4.badges.beginner };
@@ -43,14 +42,11 @@ export default function World3Task4Screen() {
   const current = WORLD3_TASK4.steps?.[stepIndex] || null;
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [points, setPoints] = useState(0);
-  const [finalPoints, setFinalPoints] = useState(0);
   const [curiosityPoints] = useState(0);
   const [flashOpen, setFlashOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState('');
   const [topMessage, setTopMessage] = useState(`${nameUpper} KEEP GOING`);
-  const [endOpen, setEndOpen] = useState(false);
-  const [summary, setSummary] = useState('');
 
   const pointsTargetRef = useRef(null);
   const curiosityTargetRef = useRef(null);
@@ -149,27 +145,29 @@ export default function World3Task4Screen() {
 
   const finishTask = useCallback(
     (score) => {
-      let outcome = 'WEAK IMPACT — the issue remains unresolved.';
-      if (score >= 24) outcome = 'STRONG IMPACT — the issue is addressed and negotiated.';
-      else if (score >= 14) outcome = 'MEDIUM IMPACT — partial response and partial visibility.';
+      const skillBadge = resolveSkillBadge(score);
+      const citizenBadge = {
+        id: 'active-citizen-badge',
+        src: `${process.env.PUBLIC_URL}/world3/citizenbadge.png`,
+      };
 
-      const finalMessage =
-        WORLD3_TASK4.finalMessage ||
-        'Participation is not about being perfect. It is about choosing to act — even in small ways.';
+      saveResults(score, [skillBadge, citizenBadge]);
 
-      setSummary(`${outcome}\n\n${finalMessage}`);
-      setFinalPoints(score);
-
-      const badges = [resolveSkillBadge(score)];
-      saveResults(score, badges);
-      setEndOpen(true);
+      navigate(OUTRO_ROUTE, {
+        state: {
+          ...player,
+          world3Task4Points: score,
+          world3Task4Badges: [skillBadge, citizenBadge],
+          citizenBadge,
+        },
+      });
     },
-    [saveResults]
+    [navigate, player, saveResults]
   );
 
   const handleToggle = useCallback(
     (key) => {
-      if (!current || modalOpen || endOpen) return;
+      if (!current || modalOpen) return;
 
       setSelectedKeys((prev) => {
         if (prev.includes(key)) {
@@ -179,103 +177,99 @@ export default function World3Task4Screen() {
         return [...prev, key];
       });
     },
-    [current, endOpen, modalOpen]
+    [current, modalOpen]
   );
 
-const handleSubmit = useCallback(() => {
-  if (!current || selectedKeys.length === 0 || modalOpen || endOpen) return;
+  const handleSubmit = useCallback(() => {
+    if (!current || selectedKeys.length === 0 || modalOpen) return;
 
-  pickTopMessage();
+    pickTopMessage();
 
-  const correctKeys = getCorrectKeys(current);
-  const correctLabels = getCorrectAnswerLabels(current);
+    const correctKeys = getCorrectKeys(current);
+    const correctLabels = getCorrectAnswerLabels(current);
 
-  const correctSelected = selectedKeys.filter((key) => correctKeys.includes(key));
-  const wrongSelected = selectedKeys.filter((key) => !correctKeys.includes(key));
+    const correctSelected = selectedKeys.filter((key) => correctKeys.includes(key));
+    const wrongSelected = selectedKeys.filter((key) => !correctKeys.includes(key));
 
-  const allCorrect =
-    wrongSelected.length === 0 && correctSelected.length === correctKeys.length;
+    const allCorrect =
+      wrongSelected.length === 0 && correctSelected.length === correctKeys.length;
 
-  const stepPointsFromOptions =
-    (current.options || [])
-      .filter((option) => correctSelected.includes(option.key))
-      .reduce((sum, option) => sum + (option.points || 0), 0);
+    const stepPointsFromOptions =
+      (current.options || [])
+        .filter((option) => correctSelected.includes(option.key))
+        .reduce((sum, option) => sum + (option.points || 0), 0);
 
-  const fallbackPoints =
-    current.multi === false
-      ? allCorrect
-        ? 4
-        : 0
-      : correctSelected.length * 2;
+    const fallbackPoints =
+      current.multi === false
+        ? allCorrect
+          ? 4
+          : 0
+        : correctSelected.length * 2;
 
-  const gained = allCorrect
-    ? stepPointsFromOptions > 0
-      ? stepPointsFromOptions
-      : fallbackPoints
-    : 0;
+    const gained = allCorrect
+      ? stepPointsFromOptions > 0
+        ? stepPointsFromOptions
+        : fallbackPoints
+      : 0;
 
-  const nextTotal = points + gained;
-  const isLast = stepIndex === WORLD3_TASK4.steps.length - 1;
+    const nextTotal = points + gained;
+    const isLast = stepIndex === WORLD3_TASK4.steps.length - 1;
 
-  if (allCorrect) {
-    showFlash();
+    if (allCorrect) {
+      showFlash();
 
-    makeFly({
-      type: 'points',
-      icon: WORLD3_TASK4.pointsIcon,
-      delta: `+${gained}`,
-    });
+      makeFly({
+        type: 'points',
+        icon: WORLD3_TASK4.pointsIcon,
+        delta: `+${gained}`,
+      });
+
+      window.setTimeout(() => {
+        if (gained > 0) {
+          setPoints(nextTotal);
+        }
+
+        if (isLast) {
+          finishTask(nextTotal);
+        } else {
+          setStepIndex((prev) => prev + 1);
+        }
+      }, 850);
+
+      return;
+    }
+
+    setModalText(
+      `NOT THE BEST STRATEGY.\n\nCORRECT ANSWER${correctLabels.length > 1 ? 'S' : ''}:\n${correctLabels.join('\n')}`
+    );
+    setModalOpen(true);
 
     window.setTimeout(() => {
-      if (gained > 0) {
-        setPoints(nextTotal);
-      }
+      setModalOpen(false);
 
       if (isLast) {
         finishTask(nextTotal);
       } else {
         setStepIndex((prev) => prev + 1);
       }
-    }, 850);
-
-    return;
-  }
-
-  setModalText(
-    `NOT THE BEST STRATEGY.\n\nCORRECT ANSWER${correctLabels.length > 1 ? 'S' : ''}:\n${correctLabels.join('\n')}`
-  );
-  setModalOpen(true);
-
-  window.setTimeout(() => {
-    setModalOpen(false);
-
-    if (isLast) {
-      finishTask(nextTotal);
-    } else {
-      setStepIndex((prev) => prev + 1);
-    }
-  }, 1000);
-}, [
-  current,
-  endOpen,
-  finishTask,
-  makeFly,
-  modalOpen,
-  pickTopMessage,
-  points,
-  selectedKeys,
-  showFlash,
-  stepIndex,
-]);
-
-  const displayPoints = endOpen ? finalPoints : points;
-  const earnedBadges = useMemo(() => [resolveSkillBadge(displayPoints)], [displayPoints]);
+    }, 1000);
+  }, [
+    current,
+    finishTask,
+    makeFly,
+    modalOpen,
+    pickTopMessage,
+    points,
+    selectedKeys,
+    showFlash,
+    stepIndex,
+  ]);
 
   return (
     <GameplayShell backgroundUrl={WORLD3_TASK4.backgroundUrl}>
       <TaskTopBar
         message={topMessage}
-        points={displayPoints}
+        points={points}
         curiosityPoints={curiosityPoints}
         pointsIcon={WORLD3_TASK4.pointsIcon}
         curiosityIcon={WORLD3_TASK4.curiosityIcon}
@@ -309,7 +303,7 @@ const handleSubmit = useCallback(() => {
           selectedKeys={selectedKeys}
           onToggle={handleToggle}
           onSubmit={handleSubmit}
-          disabled={modalOpen || endOpen}
+          disabled={modalOpen}
           submitLabel={current?.submitLabel || 'CONFIRM'}
           helperText="YOU CAN SELECT MULTIPLE ANSWERS"
         />
@@ -318,22 +312,6 @@ const handleSubmit = useCallback(() => {
       <FlyItemsLayer items={flyItems} />
       <CorrectFlash open={flashOpen} label="STRONG MOVE" />
       <InfoModal open={modalOpen} onClose={() => setModalOpen(false)} text={modalText} />
-
-      <TaskCompletionModal
-        open={endOpen}
-        onClose={() => navigate(MAIN_MENU_ROUTE, { state: player })}
-        title={`BRAVO ${nameUpper} YOU BUILT CIVIC IMPACT!`}
-        stats={[
-          { label: 'POINTS', value: displayPoints },
-          { label: 'CURIOSITY POINTS', value: curiosityPoints },
-          { label: 'OUTCOME', value: summary },
-        ]}
-        badges={earnedBadges}
-        actions={[
-          { label: 'GO BACK TO MAIN MENU', onClick: () => navigate(MAIN_MENU_ROUTE, { state: player }) },
-          { label: 'GO TO WORLD SELECT', onClick: () => navigate('/world-select', { state: player }) },
-        ]}
-      />
     </GameplayShell>
   );
 }

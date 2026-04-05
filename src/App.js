@@ -43,6 +43,7 @@ import World3Task4IntroScreen from "./screens/World3Task4IntroScreen/World3Task4
 import World3Task4Screen from "./screens/World3Task4Screen/World3Task4Screen";
 
 import TaskRunnerScreen from "./screens/TaskRunner/TaskRunnerScreen";
+import World3Task4OutroScreen from "./screens/World3Task4OutroScreen/World3Task4OutroScreen";
 
 export default function App() {
   return (
@@ -89,6 +90,7 @@ export default function App() {
           <Route path="/world-3/task-4" element={<World3Task4Screen />} />
 
           <Route path="/world-1/task/:taskId" element={<TaskRunnerScreen />} />
+          <Route path="/world-3/task-4-outro" element={<World3Task4OutroScreen />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
