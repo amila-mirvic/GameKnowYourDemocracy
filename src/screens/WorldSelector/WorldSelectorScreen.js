@@ -39,13 +39,13 @@ const WORLDS = [
   {
     id: 4,
     route: "/world-4",
-    title: "WORLD 4 - NAME",
+    title: "WORLD 4 - ADVOCACY & INFLUENCE",
     thumbTitle: "WORLD 4",
     image: `${process.env.PUBLIC_URL}/worlds/world4.png`,
-    playable: false,
-    disabled: true,
+    playable: true,
+    disabled: false,
     description:
-      "World 4 is also locked for now. It remains in the selector as part of the full world overview and can be activated later without changing the screen structure.",
+      "In this world, you will explore advocacy, influence, and how change happens when people act strategically. You will learn the difference between noise and advocacy, identify who needs to be influenced, build stronger public messages, and practice step-by-step advocacy choices that can move an issue from concern to real impact.",
   },
 ];
 
